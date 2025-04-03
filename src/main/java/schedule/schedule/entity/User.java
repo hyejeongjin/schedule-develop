@@ -2,6 +2,8 @@ package schedule.schedule.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Getter
 @Entity
@@ -12,13 +14,13 @@ public class User extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     public User() {
@@ -29,4 +31,18 @@ public class User extends BaseEntity{
         this.password = password;
         this.email = email;
     }
+
+    // 이메일 체크, 비밀번호 체크
+    public void isEmail(String email){
+        if(!this.getEmail().equals(email)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong email!!");
+        }
+    }
+
+    public void isPassword(String password){
+        if(!this.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password!!");
+        }
+    }
+
 }

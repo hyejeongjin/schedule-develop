@@ -43,8 +43,9 @@ public class UserService {
     @Transactional
     public UserResponseDto updateUser(Long id, String username, String password, String email) {
 
-        //묻지말고 시켜라?
-        checkPassword(id, password);
+        User user = userRepository.findByIdOrElseThrow(id);
+
+        user.isPassword(password);
 
         return new UserResponseDto(username, email);
 
@@ -57,10 +58,5 @@ public class UserService {
         userRepository.delete(findUser);
     }
 
-    public void checkPassword(Long id, String password){
-        User user = userRepository.findByIdOrElseThrow(id);
-        if(!user.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password!!");
-        }
-    }
+
 }
