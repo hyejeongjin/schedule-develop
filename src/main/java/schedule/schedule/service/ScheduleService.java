@@ -45,18 +45,18 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleUpdateResponseDto updateSchedule(Long user_id, Long schedule_id, ScheduleUpdateRequestDto requestDto) {
+    public ScheduleUpdateResponseDto updateSchedule(Long schedule_id, ScheduleUpdateRequestDto requestDto) {
 
         Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(schedule_id);
-        User findUser = userRepository.findByIdOrElseThrow(user_id);
+        User findUser = userRepository.findByIdOrElseThrow(requestDto.getUser_id());
 
-        if(!findUser.getUser_id().equals(user_id) && !findSchedule.getSchedule_id().equals(schedule_id)){
+        if(!findUser.getUser_id().equals(requestDto.getUser_id()) && !findSchedule.getSchedule_id().equals(schedule_id)){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "작성자가 일치하지 않습니다!");
         }
 
         findSchedule.update(requestDto.getTitle(), requestDto.getContent());
 
-        return updateSchedule(user_id, schedule_id, requestDto);
+        return new ScheduleUpdateResponseDto(findSchedule.getTitle(), findSchedule.getContent());
 
     }
 
@@ -64,5 +64,12 @@ public class ScheduleService {
         Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
 
         scheduleRepository.delete(findSchedule);
+    }
+
+    public ScheduleResponseDto findById(Long id) {
+
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+
+        return new ScheduleResponseDto(findSchedule.getSchedule_id(), findSchedule.getTitle(), findSchedule.getContent());
     }
 }

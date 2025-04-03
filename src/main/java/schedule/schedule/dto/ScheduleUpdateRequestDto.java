@@ -9,9 +9,13 @@ public class ScheduleUpdateRequestDto {
 
     private final String content;
 
+    private final Long user_id;
 
-    public ScheduleUpdateRequestDto(String title, String content) {
+
+    public ScheduleUpdateRequestDto(Long userId, String title, String content) {
+        this.user_id = userId;
         this.title = title;
         this.content = content;
+
     }
 }

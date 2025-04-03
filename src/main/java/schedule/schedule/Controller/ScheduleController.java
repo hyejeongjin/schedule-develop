@@ -35,16 +35,23 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleResponseDtoList, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateSchedule(
-            @PathVariable Long user_id,
+    @GetMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> findById(@PathVariable Long id){
+        ScheduleResponseDto scheduleResponseDto = scheduleService.findById(id);
+
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/{schedule_id}")
+    public ResponseEntity<ScheduleUpdateResponseDto> updateSchedule(
             @PathVariable Long schedule_id,
             @RequestBody ScheduleUpdateRequestDto requestDto
             ){
 
-        scheduleService.updateSchedule(user_id, schedule_id, requestDto);
+        ScheduleUpdateResponseDto scheduleUpdateResponseDto = scheduleService.updateSchedule(schedule_id, requestDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(scheduleUpdateResponseDto, HttpStatus.OK);
 
     }
 

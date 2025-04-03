@@ -19,6 +19,7 @@ public class ScheduleResponseDto {
         this.content = content;
     }
 
+
     public static ScheduleResponseDto toDto(Schedule schedule){
         return new ScheduleResponseDto(schedule.getSchedule_id(), schedule.getTitle(), schedule.getContent());
     }
