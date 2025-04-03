@@ -59,4 +59,10 @@ public class ScheduleService {
         return updateSchedule(user_id, schedule_id, requestDto);
 
     }
+
+    public void delete(Long id) {
+        Schedule findSchedule = scheduleRepository.findByIdOrElseThrow(id);
+
+        scheduleRepository.delete(findSchedule);
+    }
 }
