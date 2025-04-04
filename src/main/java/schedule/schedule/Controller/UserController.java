@@ -1,13 +1,12 @@
 package schedule.schedule.Controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import schedule.schedule.dto.SignUpRequestDto;
-import schedule.schedule.dto.SignUpResponseDto;
-import schedule.schedule.dto.UserResponseDto;
-import schedule.schedule.dto.UserUpdateRequestDto;
+import schedule.schedule.dto.*;
 import schedule.schedule.service.UserService;
 
 @RestController
@@ -38,15 +37,25 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id,
+    public ResponseEntity<UserUpdateResponseDto> updateUser(@PathVariable Long id,
                                                       @RequestBody UserUpdateRequestDto requestDto){
 
-        return new ResponseEntity<>(userService.updateUser(id, requestDto.getUsername(), requestDto.getPassword(), requestDto.getEmail()), HttpStatus.OK);
+        UserUpdateResponseDto userUpdateResponseDto = userService.updateUser(id, requestDto);
+
+        return new ResponseEntity<>(userUpdateResponseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        userService.delete(id);
+    @DeleteMapping
+    public ResponseEntity<Void> delete(HttpServletRequest httpRequest){
+
+        HttpSession session = httpRequest.getSession();
+
+        Long loginUser = (Long) session.getAttribute("loginUser");
+
+        userService.delete(loginUser);
+
+        // 세션 초기화
+        session.invalidate();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

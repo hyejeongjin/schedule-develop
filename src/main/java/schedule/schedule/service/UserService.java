@@ -1,5 +1,6 @@
 package schedule.schedule.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import schedule.schedule.dto.SignUpResponseDto;
 import schedule.schedule.dto.UserResponseDto;
+import schedule.schedule.dto.UserUpdateRequestDto;
+import schedule.schedule.dto.UserUpdateResponseDto;
 import schedule.schedule.entity.User;
 import schedule.schedule.repository.UserRepository;
 
@@ -41,13 +44,13 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto updateUser(Long id, String username, String password, String email) {
+    public UserUpdateResponseDto updateUser(Long id, UserUpdateRequestDto requestDto) {
 
         User user = userRepository.findByIdOrElseThrow(id);
 
-        user.isPassword(password);
+        user.update(requestDto.getUsername(), requestDto.getEmail());
 
-        return new UserResponseDto(username, email);
+        return new UserUpdateResponseDto(user.getUsername(), user.getEmail());
 
     }
 
