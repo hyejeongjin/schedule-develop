@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class LoginRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "이메일은 필수로 입력해야합니다!")
     private final String email;
 
-    @NotBlank
+    @NotBlank(message = "바밀번호는 필수로 입력해야합니다!")
     private final String password;
 
 

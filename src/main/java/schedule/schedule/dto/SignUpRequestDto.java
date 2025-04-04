@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 public class SignUpRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "이름은 필수로 입력해야합니다!")
     private final String username;
 
-    @NotBlank
+    @NotBlank(message = "바밀번호는 필수로 입력해야합니다!")
     private final String password;
 
-    @NotBlank
+    @NotBlank(message = "이메일은 필수로 입력해야합니다!")
     @Pattern(regexp = "^[\\w!#$%&'*+/=?`{|}~^.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
     private final String email;
 
