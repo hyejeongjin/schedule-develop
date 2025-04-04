@@ -1,11 +1,15 @@
 package schedule.schedule.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
 public class CreateScheduleRequestDto {
 
+    @NotBlank
     private final String title;
+
+    @NotBlank
     private final String content;
 
     // 작성자를 보기 위함.
